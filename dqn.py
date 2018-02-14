@@ -93,6 +93,8 @@ class Agent():
         # Initialize target network
         self.sess.run(self.update_target_network)
 
+        _, self.time = self.get_time()
+
     def build_network(self):
         model = Sequential()
         #model.add(Convolution2D(32, 8, 8, subsample=(4, 4), activation='relu', input_shape=(STATE_LENGTH, FRAME_WIDTH, FRAME_HEIGHT)))
@@ -154,6 +156,11 @@ class Agent():
 
         return action
 
+    def get_time(self):
+        date = datetime.now()
+        now = date.hour * 3600 + date.minute * 60 + date.second
+        return date, now
+
     def run(self, state, action, reward, terminal, observation):
         next_state = np.append(state[1:, :, :], observation, axis=0)
 
@@ -203,11 +210,15 @@ class Agent():
             else:
                 mode = 'exploit'
             if (self.episode + 1) % 50 == 0:
-                date = datetime.now()
-                print('EPI: {0:6d} / TIM: {1:8d} / DUR: {2:5d} / EPS: {3:.5f} / REWARD: {4:3.0f} / MAX_Q: {5:2.4f} / LOSS: {6:.5f} / MODE: {7} / {8:02d}:{9:02d}'.format(
+                date, now = self.get_time()
+                ela = now - self.time
+                if ela < 0:
+                    ela += 24 * 3600
+                self.time = now
+                print('EPI: {0:6d} / TIM: {1:8d} / DUR: {2:5d} / EPS: {3:.5f} / REWARD: {4:3.0f} / MAX_Q: {5:2.4f} / LOSS: {6:.5f} / MODE: {7} / {8:02d}:{9:02d}:{10:02d} - {11}'.format(
                     self.episode + 1, self.t, self.duration, self.epsilon,
                     self.total_reward, self.total_q_max / float(self.duration),
-                    self.total_loss / (float(self.duration) / float(TRAIN_INTERVAL)), mode, date.hour, date.minute))
+                    self.total_loss / (float(self.duration) / float(TRAIN_INTERVAL)), mode, date.hour, date.minute, date.second, ela))
 
             self.total_reward = 0
             self.total_q_max = 0
