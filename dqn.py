@@ -200,10 +200,11 @@ class Agent():
                 mode = 'explore'
             else:
                 mode = 'exploit'
-            print('EPISODE: {0:6d} / TIMESTEP: {1:8d} / DURATION: {2:5d} / EPSILON: {3:.5f} / TOTAL_REWARD: {4:3.0f} / AVG_MAX_Q: {5:2.4f} / AVG_LOSS: {6:.5f} / MODE: {7}'.format(
-                self.episode + 1, self.t, self.duration, self.epsilon,
-                self.total_reward, self.total_q_max / float(self.duration),
-                self.total_loss / (float(self.duration) / float(TRAIN_INTERVAL)), mode))
+            if self.episode % 10 == 0:
+                print('EPISODE: {0:6d} / TIMESTEP: {1:8d} / DURATION: {2:5d} / EPSILON: {3:.5f} / TOTAL_REWARD: {4:3.0f} / AVG_MAX_Q: {5:2.4f} / AVG_LOSS: {6:.5f} / MODE: {7}'.format(
+                    self.episode + 1, self.t, self.duration, self.epsilon,
+                    self.total_reward, self.total_q_max / float(self.duration),
+                    self.total_loss / (float(self.duration) / float(TRAIN_INTERVAL)), mode))
 
             self.total_reward = 0
             self.total_q_max = 0
