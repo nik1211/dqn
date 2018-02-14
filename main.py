@@ -6,8 +6,8 @@ import os
 from dqn import dqn_main
 
 def main():
-        os.chdir("dqn")
-	dqn_main()
+    os.chdir("dqn")
+    dqn_main()
 	
 if __name__ == '__main__':
     main()
