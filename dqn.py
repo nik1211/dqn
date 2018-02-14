@@ -5,6 +5,7 @@ import gym
 import random
 import numpy as np
 import tensorflow as tf
+from datetime import datetime
 from collections import deque
 from skimage.color import rgb2gray
 from skimage.transform import resize
@@ -202,10 +203,11 @@ class Agent():
             else:
                 mode = 'exploit'
             if (self.episode + 1) % 50 == 0:
-                print('EPISODE: {0:6d} / TIMESTEP: {1:8d} / DURATION: {2:5d} / EPSILON: {3:.5f} / TOTAL_REWARD: {4:3.0f} / AVG_MAX_Q: {5:2.4f} / AVG_LOSS: {6:.5f} / MODE: {7}'.format(
+                date = datetime.now()
+                print('EPI: {0:6d} / TIM: {1:8d} / DUR: {2:5d} / EPS: {3:.5f} / REWARD: {4:3.0f} / MAX_Q: {5:2.4f} / LOSS: {6:.5f} / MODE: {7} / {8:02d}:{9:02d}'.format(
                     self.episode + 1, self.t, self.duration, self.epsilon,
                     self.total_reward, self.total_q_max / float(self.duration),
-                    self.total_loss / (float(self.duration) / float(TRAIN_INTERVAL)), mode))
+                    self.total_loss / (float(self.duration) / float(TRAIN_INTERVAL)), mode, date.hour, date.minute))
 
             self.total_reward = 0
             self.total_q_max = 0
