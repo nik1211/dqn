@@ -33,9 +33,10 @@ TRAIN_INTERVAL = 4  # The agent selects 4 actions between successive updates
 LEARNING_RATE = 0.00025  # Learning rate used by RMSProp
 MOMENTUM = 0.95  # Momentum used by RMSProp
 MIN_GRAD = 0.01  # Constant added to the squared gradient in the denominator of the RMSProp update
-SAVE_INTERVAL = 300000  # The frequency with which the network is saved
+#SAVE_INTERVAL = 300000  # The frequency with which the network is saved
+SAVE_INTERVAL = 50000  # The frequency with which the network is saved
 NO_OP_STEPS = 30  # Maximum number of "do nothing" actions to be performed by the agent at the start of an episode
-LOAD_NETWORK = False
+LOAD_NETWORK = True
 TRAIN = True
 SAVE_NETWORK_PATH = 'saved_networks/' + ENV_NAME
 SAVE_SUMMARY_PATH = 'summary/' + ENV_NAME
@@ -200,7 +201,7 @@ class Agent():
                 mode = 'explore'
             else:
                 mode = 'exploit'
-            if self.episode % 10 == 0:
+            if (self.episode + 1) % 50 == 0:
                 print('EPISODE: {0:6d} / TIMESTEP: {1:8d} / DURATION: {2:5d} / EPSILON: {3:.5f} / TOTAL_REWARD: {4:3.0f} / AVG_MAX_Q: {5:2.4f} / AVG_LOSS: {6:.5f} / MODE: {7}'.format(
                     self.episode + 1, self.t, self.duration, self.epsilon,
                     self.total_reward, self.total_q_max / float(self.duration),
